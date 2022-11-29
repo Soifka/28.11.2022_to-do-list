@@ -36,14 +36,14 @@ function createTask(value) {
     const div = createElement('div', {classNames: ['wrapper', 'border-style']}, input, p, button);
     div.setAttribute('id', taskIdentifier);
 
-    console.dir(input);
+    //console.dir(input);
 
     return div;
 }
 
 function addTaskToList(event) {
     event.preventDefault();
-    console.dir(event);
+    //console.dir(event);
     const inputValue = event.target[0].value;
     const wrapper = createTask(inputValue);
     root.append(wrapper);
@@ -73,7 +73,7 @@ function toHide({target}) {
     const inp = createElement('input', {classNames: ['inp-change', 'tmp']});
     inp.setAttribute('type', 'text');
     const p = document.querySelector(`p.${taskId}`);
-    console.dir(inp);
+    //console.dir(inp);
     inp.value = p.textContent;
     const btnYes = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'ok');
     const btnNo = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'x');
@@ -87,9 +87,9 @@ function toHide({target}) {
 }
 
 function confirmChanges({target}) {
-    console.dir(event);
+    //console.dir(event);
     const {previousElementSibling: {value}} = target;
-    console.log(value);
+    //console.log(value);
     const {parentElement: {id}} = target;
 
     const p = document.querySelector(`p.${id}`);
@@ -120,7 +120,7 @@ function cancelChanges({target}) {
     }
 }
 
-function createChangeForm(event) {
+function createChangeForm() {
     const input = createElement('input', {classNames: ['inp', 'border-style']});
     input.setAttribute('type', 'text');
     input.setAttribute('id', 'enter-changes');
