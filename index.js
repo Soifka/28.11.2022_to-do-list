@@ -21,7 +21,7 @@ function createTask(value) {
     const taskIdentifier = `task-${Date.now()}`;
     const input = createElement('input', {classNames: ['check-task', 'border-style']});
     input.setAttribute('type', 'checkbox');
-    input.addEventListener('change', checkElement); // решить проблему с событием, нужно что-то другое вместо фокуса
+    input.addEventListener('change', checkElement);
 
     const p = createElement('p', {classNames: ['text', taskIdentifier]});
     p.append(value);
@@ -47,18 +47,24 @@ function addTaskToList(event) {
     const inputValue = event.target[0].value;
     const wrapper = createTask(inputValue);
     root.append(wrapper);
-    //event.target[0].value = ''; // event.target.reset() заменить?
     event.target.reset();
 }
 
-function checkElement(event) {  // переписать функцию, добавить проверки
-    const elem = event.target.parentElement;
-    checkedTaskArray.push(elem);
+function checkElement({target}) {  // переписать функцию, добавить проверки --> DONE
+    const elem = target.parentElement;
+
+    if(!checkedTaskArray.includes(elem) && target.checked) {
+        checkedTaskArray.push(elem);
+    }
+    
+    if(checkedTaskArray.includes(elem) && !target.checked) {
+        const index = checkedTaskArray.indexOf(elem);
+        checkedTaskArray.splice(index, 1);
+    }
 }
 
 function toHide({target}) {
     const taskId = target.dataset.id;
-    //const text = document.querySelector(`p.${taskId}`);
     const arr = document.getElementsByClassName(taskId);
     for(const item of arr) {
         item.style.display = 'none';
@@ -66,11 +72,9 @@ function toHide({target}) {
 
     const inp = createElement('input', {classNames: ['inp-change', 'tmp']});
     inp.setAttribute('type', 'text');
-    //inp.autofocus = true;
     const p = document.querySelector(`p.${taskId}`);
     console.dir(inp);
     inp.value = p.textContent;
-    //inp.autofocus = 'true';
     const btnYes = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'ok');
     const btnNo = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'x');
 
@@ -120,7 +124,6 @@ function createChangeForm(event) {
     const input = createElement('input', {classNames: ['inp', 'border-style']});
     input.setAttribute('type', 'text');
     input.setAttribute('id', 'enter-changes');
-    //input.value = checkedTaskArray[0].children[1].textContent;
     
     for(const item of checkedTaskArray) {
         input.value = item.children[1].textContent;
