@@ -29,7 +29,7 @@ function createTask(value) {
     const img = document.createElement('img');
     img.src = "./images/free-icon-edit-1159633.png";
     img.dataset.id = taskIdentifier;
-    img.addEventListener('click', toHide);
+    img.addEventListener('click', createFieldForChanges);
 
     const button = createElement('button', {classNames: ['btn-small', 'border-style', taskIdentifier]}, img);
     
@@ -63,24 +63,26 @@ function checkElement({target}) {  // переписать функцию, до�
     }
 }
 
-function toHide({target}) {
+function createFieldForChanges({target}) {
     const taskId = target.dataset.id;
     const arr = document.getElementsByClassName(taskId);
     for(const item of arr) {
         item.style.display = 'none';
     }
 
-    const inp = createElement('input', {classNames: ['inp-change', 'tmp']});
-    inp.setAttribute('type', 'text');
+    const input = createElement('input', {classNames: ['inp-change', 'tmp']});
+    input.setAttribute('type', 'text');
+    //console.dir(input);
+
     const p = document.querySelector(`p.${taskId}`);
-    //console.dir(inp);
-    inp.value = p.textContent;
+    
+    input.value = p.textContent;
     const btnYes = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'ok');
     const btnNo = createElement('button', {classNames: ['btn-small', 'border-style', 'tmp']}, 'x');
 
     const div = document.getElementById(taskId);
-    div.append(inp, btnYes, btnNo);
-    inp.focus();
+    div.append(input, btnYes, btnNo);
+    input.focus();
 
     btnYes.addEventListener('click', confirmChanges);
     btnNo.addEventListener('click', cancelChanges);
@@ -100,8 +102,8 @@ function confirmChanges({target}) {
         item.style.display = 'none';
     }
 
-    const arr = document.getElementsByClassName(id);
-    for(const item of arr) {
+    const arrItem = document.getElementsByClassName(id);
+    for(const item of arrItem) {
         item.style.display = 'initial';
     }
 }
@@ -114,28 +116,10 @@ function cancelChanges({target}) {
         item.style.display = 'none';
     }
 
-    const arr = document.getElementsByClassName(id);
-    for(const item of arr) {
+    const arrItem = document.getElementsByClassName(id);
+    for(const item of arrItem) {
         item.style.display = 'initial';
     }
-}
-
-function createChangeForm() {
-    const input = createElement('input', {classNames: ['inp', 'border-style']});
-    input.setAttribute('type', 'text');
-    input.setAttribute('id', 'enter-changes');
-    
-    for(const item of checkedTaskArray) {
-        input.value = item.children[1].textContent;
-    }
-
-    const button = createElement('button', {classNames: ['btn', 'border-style']});
-    button.setAttribute('type', 'submit');
-    button.append('Save changes');
-
-    const changeForm = createElement('form', {classNames: ['change-task']}, input, button);
-
-    root.append(changeForm);
 }
 
 function deleteTask() {
